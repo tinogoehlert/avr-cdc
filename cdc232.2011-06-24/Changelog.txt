@@ -1,0 +1,66 @@
+This file documents changes in the firmware-only CDC driver for atmel's AVR
+microcontrollers. New entries are always appended to the end of the file.
+Scroll down to the bottom to see the most recent changes.
+
+* Release 2006-06-28
+
+  - Polling instead of using interrupt at UART processing (ATmega).
+  - Adapted to higher baud rate setting (ATmega).
+  - Reduced interrupt cycles in software UART (ATtiny).
+  - Removed zero-sized receive block in usbFunctionWriteOut().
+* Release 2006-07-18
+
+  - Added Rx_interrupt version for high speed transfer (ATmega).
+  - Changed maximum packet size to 6 for stable connection (ATmega).
+  - Configured USI to transmit data (ATtiny).
+  - Added test report.
+* Release 2006-08-28
+
+  - Adapted for new AVR-USB and WinAVR20070122.
+  - Modified to use maximum BULK_IN packet size in main.c.
+* Release 2007-04-07
+
+  - Adapted for new AVR-USB and WinAVR20070525.
+  - Shortened the polling interval of interrupt endpoint to 2mS.
+  - Avoided duplicate response at SET_CONTROL_LINE_STATE request.
+  - Sent zero sized packet on bulk-in endpoint after SETUP request.
+  - Enforce data toggling to DATA0 on interrupt and bulk-in endpoints after
+   usbInit().
+* Release 2007-07-07
+
+  - Released ATtiny2313 version.
+* Release 2007-10-03
+
+  - Fixed bug on ATtiny inverted version. (Thanks to Klaus Weglehner)
+  - Updated to the newest AVR-USB.
+* Release 2008-01-27
+
+  - Updated to the newest AVR-USB and enabled other clocks.
+  - Defined all configuration options into Makefile.
+  - Extended the interrupt polling interval.
+* Release 2008-08-25
+
+  - Expanded the bulk-IN packet size to 8 bytes. (ATtiny2313)
+  - Remade the data buffering to achieve the higher baudrates. (ATtiny2313)
+  - Implemented three baudrates using port bits selection. (ATtiny2313)
+* Release 2009-01-26
+
+  - Corrected ATmega8 fuse bit(CKOPT=0). (Thanks to Rene Staffen)
+  - Merged all AVR versions to one.
+* Release 2009-07-20
+
+  - Stabilized RC oscillator calibration. (ATtiny45)
+  - Supported the baudrate configuration. (ATtiny2313)
+  - Added control lines (DTR,RTS,CTS). (ATmega48)
+  - Added software inverters. (ATmega48)
+  - Improved performance. (ATmega8/48)
+  - Updated to the newest V-USB.
+* Release 2010-02-28
+
+  - Fixed UART_INVERT bug. (ATtiny45)
+  - Added the X'tal version. (ATtiny45xtal)
+  - Added control lines (DTR,RTS,CTS) at 16/20MHz. (ATtiny2313)
+  - Updated to the newest V-USB.
+* Release 2011-06-24
+
+
