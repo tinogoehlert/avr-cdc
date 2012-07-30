@@ -4,7 +4,7 @@ osccal.o: ../../libs-device/osccal.c \
  /usr/lib/gcc/avr/4.7.1/../../../../avr/include/inttypes.h \
  /usr/lib/gcc/avr/4.7.1/include/stdint.h \
  /usr/lib/gcc/avr/4.7.1/../../../../avr/include/stdint.h \
- /usr/lib/gcc/avr/4.7.1/../../../../avr/include/avr/iotn45.h \
+ /usr/lib/gcc/avr/4.7.1/../../../../avr/include/avr/iotn85.h \
  /usr/lib/gcc/avr/4.7.1/../../../../avr/include/avr/iotnx5.h \
  /usr/lib/gcc/avr/4.7.1/../../../../avr/include/avr/portpins.h \
  /usr/lib/gcc/avr/4.7.1/../../../../avr/include/avr/common.h \
@@ -28,7 +28,7 @@ osccal.o: ../../libs-device/osccal.c \
 
 /usr/lib/gcc/avr/4.7.1/../../../../avr/include/stdint.h:
 
-/usr/lib/gcc/avr/4.7.1/../../../../avr/include/avr/iotn45.h:
+/usr/lib/gcc/avr/4.7.1/../../../../avr/include/avr/iotn85.h:
 
 /usr/lib/gcc/avr/4.7.1/../../../../avr/include/avr/iotnx5.h:
 

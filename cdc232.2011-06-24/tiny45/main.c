@@ -25,6 +25,16 @@
 #include "uart.h"
 
 
+
+// Some macros that make the code more readable
+#define OUT_LOW(port,pin) port &= ~(1<<pin)
+#define OUT_HI(port,pin) port |= (1<<pin)
+#define SET_IN(portdir,pin) portdir &= ~(1<<pin)
+#define SET_OUT(portdir,pin) portdir |= (1<<pin)
+
+
+
+
 enum {
     SEND_ENCAPSULATED_COMMAND = 0,
     GET_ENCAPSULATED_RESPONSE,
@@ -123,7 +133,6 @@ static PROGMEM const char configDescrCDC[] = {   /* USB configuration descriptor
     0,           /* in ms */
 };
 
-
 uchar usbFunctionDescriptor(usbRequest_t *rq)
 {
 
@@ -142,6 +151,14 @@ static uchar        intr3Status;    /* used to control interrupt endpoint transm
 
 static usbWord_t    baud;
 
+void delay_ms(uint8_t ms) {
+    uint16_t delay_count = F_CPU / 17500;
+    volatile uint16_t i; 
+    while (ms != 0) {
+        for (i=0; i != delay_count; i++);
+            ms--;
+    }
+}
 
 /* ------------------------------------------------------------------------- */
 /* ----------------------------- USB interface ----------------------------- */
@@ -158,10 +175,15 @@ usbRequest_t    *rq = (void *)data;
         /*    GET_LINE_CODING -> usbFunctionRead()    */
         /*    SET_LINE_CODING -> usbFunctionWrite()    */
         }
+
         if(rq->bRequest == SET_CONTROL_LINE_STATE){
+            
+            PORTB  = (PORTB&~(1<<UART_CFG_DTR))|((rq->wValue.word&1)<<UART_CFG_DTR);
+            
             /* Report serial state (carrier detect). On several Unix platforms,
              * tty devices can only be opened when carrier detect is set.
              */
+
             if( intr3Status==0 )
                 intr3Status = 2;
         }
@@ -230,7 +252,7 @@ static void hardwareInit(void)
 {
 
     /* activate pull-ups except on USB lines */
-    USB_CFG_IOPORT   = (uchar)~((1<<USB_CFG_DMINUS_BIT)|(1<<USB_CFG_DPLUS_BIT));
+    USB_CFG_IOPORT   = (uchar)~((1<<USB_CFG_DMINUS_BIT)|(1<<USB_CFG_DPLUS_BIT)|(1<<UART_CFG_DTR));
     /* all pins input except USB (-> USB reset) */
 #ifdef USB_CFG_PULLUP_IOPORT    /* use usbDeviceConnect()/usbDeviceDisconnect() if available */
     USBDDR    = 0;    /* we do RESET by deactivating pullup */
@@ -252,11 +274,13 @@ static void hardwareInit(void)
     /*    USART configuration    */
     baud.word  = UART_DEFAULT_BPS;
     uartInit(baud.word);
+    SET_OUT(DDRB,UART_CFG_DTR);
 }
 
 
 int main(void)
 {
+
     wdt_enable(WDTO_1S);
 #if USB_CFG_HAVE_MEASURE_FRAME_LENGTH
 	oscInit();
@@ -264,6 +288,7 @@ int main(void)
     odDebugInit();
     hardwareInit();
     usbInit();
+
 
     intr3Status = 0;
     sendEmptyFrame  = 0;

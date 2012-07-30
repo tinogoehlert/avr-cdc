@@ -40,6 +40,8 @@
 
 #define UART_CFG_TXD        1
 #define UART_CFG_RXD        2   /*  INT0    */
+#define UART_CFG_DTR        0  /* DTR extension : Tino Goehlert  */
+
 
 #define UART_INTR_CFG            MCUCR
 #if UART_INVERT
