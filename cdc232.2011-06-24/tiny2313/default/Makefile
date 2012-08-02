@@ -56,7 +56,12 @@ OBJECTS = main.o usbdrv.o usbdrvasm.o oddebug.o
 LINKONLYOBJECTS = 
 
 ## Build
-all: $(TARGET) cdc2313.hex cdc2313.eep cdc2313.lss size
+
+# OLD 
+#all: $(TARGET) cdc2313.hex cdc2313.eep cdc2313.lss size
+
+#NEW kicked out size, because avr-size seems to be broken
+all: $(TARGET) cdc2313.hex cdc2313.eep cdc2313.lss
 
 ## Compile
 usbdrvasm.o: ../../usbdrv/usbdrvasm.S

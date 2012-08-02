@@ -28,12 +28,14 @@
 #define HW_CDC_BULK_OUT_SIZE     8
 #define HW_CDC_BULK_IN_SIZE      8
 
-/*	Control signals works at 16/20MHz clocks. */
-#ifdef USE_UART_CTRL
+/*      NAH!! let's try DTR also with 12MHZ ;) : Tino Göhelrt  */
 #define	UART_CTRL_PIN		PINB
 #define	UART_CTRL_DDR		DDRB
 #define	UART_CTRL_PORT		PORTB
 #define	UART_CTRL_DTR		5
+
+/*	Control signals works at 16/20MHz clocks. */
+#ifdef USE_UART_CTRL
 #define	UART_CTRL_RTS		6
 #define	UART_CTRL_CTS		7
 #endif
@@ -51,7 +53,7 @@ enum {
 };
 
 
-static PROGMEM char configDescrCDC[] = {   /* USB configuration descriptor */
+static PROGMEM const char configDescrCDC[] = {   /* USB configuration descriptor */
     9,          /* sizeof(usbDescrConfig): length of descriptor in bytes */
     USBDESCR_CONFIG,    /* descriptor type */
     67,
@@ -167,11 +169,9 @@ usbRequest_t    *rq = (void *)data;
         /*    GET_LINE_CODING -> usbFunctionRead()    */
         /*    SET_LINE_CODING -> usbFunctionWrite()   */
         }
-#ifdef USE_UART_CTRL
         if(rq->bRequest==SET_CONTROL_LINE_STATE){
-            UART_CTRL_PORT	= (UART_CTRL_PORT&~(1<<UART_CTRL_DTR))|((rq->wValue.word&1)<<UART_CTRL_DTR);
+	    UART_CTRL_PORT	= (UART_CTRL_PORT&~(1<<UART_CTRL_DTR))|((rq->wValue.word&1)<<UART_CTRL_DTR);
         }
-#endif
     }
     return 0;
 }
@@ -276,9 +276,10 @@ uchar		j;
 #endif
 
 	PORTB	= 0xff;
-
 #ifdef USE_UART_CTRL
 	UART_CTRL_DDR	|= (1<<UART_CTRL_DTR) | (1<<UART_CTRL_RTS);
+#else
+	UART_CTRL_DDR	|= (1<<UART_CTRL_DTR);
 #endif
 }
 

@@ -390,8 +390,8 @@ section at the end of this file).
 /* ----------------------- Optional MCU Description ------------------------ */
 
 /*	ATmega***p/pa needs SIG_ definitions	*/
-#ifndef SIG_INTERRUPT0
-#define SIG_INTERRUPT0			_VECTOR(1)
+#ifndef INT0_vect
+#define INT0_vect			_VECTOR(1)
 #endif
 
 /* The following configurations have working defaults in usbdrv.h. You
