@@ -50,8 +50,8 @@ section at the end of this file).
 
 #elif defined (__AVR_ATtiny45__) || defined (__AVR_ATtiny85__)
 #define USB_CFG_IOPORTNAME      B
-#define USB_CFG_DMINUS_BIT      4
-#define USB_CFG_DPLUS_BIT       3
+#define USB_CFG_DMINUS_BIT      3
+#define USB_CFG_DPLUS_BIT       4
 
 #elif defined (__AVR_ATtiny461__) || defined (__AVR_ATtiny861__)
 #define USB_CFG_IOPORTNAME      B
