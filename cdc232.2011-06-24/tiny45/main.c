@@ -178,7 +178,7 @@ usbRequest_t    *rq = (void *)data;
 
         if(rq->bRequest == SET_CONTROL_LINE_STATE){
             
-            PORTB  = (PORTB&~(1<<UART_CFG_DTR))|((rq->wValue.word&1)<<UART_CFG_DTR);
+            PORTB  = (PORTB&~(1<<UART_CFG_DTR))|(!(rq->wValue.word&1)<<UART_CFG_DTR);
             
             /* Report serial state (carrier detect). On several Unix platforms,
              * tty devices can only be opened when carrier detect is set.
@@ -252,7 +252,7 @@ static void hardwareInit(void)
 {
 
     /* activate pull-ups except on USB lines */
-    USB_CFG_IOPORT   = (uchar)~((1<<USB_CFG_DMINUS_BIT)|(1<<USB_CFG_DPLUS_BIT)|(1<<UART_CFG_DTR));
+    USB_CFG_IOPORT   = (uchar)~((1<<USB_CFG_DMINUS_BIT)|(1<<USB_CFG_DPLUS_BIT));
     /* all pins input except USB (-> USB reset) */
 #ifdef USB_CFG_PULLUP_IOPORT    /* use usbDeviceConnect()/usbDeviceDisconnect() if available */
     USBDDR    = 0;    /* we do RESET by deactivating pullup */
@@ -271,10 +271,13 @@ static void hardwareInit(void)
     USBDDR    = 0;      /*  remove USB reset condition */
 #endif
 
+    PORTB= 0xff;
     /*    USART configuration    */
     baud.word  = UART_DEFAULT_BPS;
     uartInit(baud.word);
-    SET_OUT(DDRB,UART_CFG_DTR);
+
+   UART_DDR |= (1<<UART_CFG_DTR);
+   //SET_OUT(UART_DDR,UART_CFG_DTR);
 }
 
 
